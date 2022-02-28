@@ -1,0 +1,40 @@
+[
+  {
+    "model" : "numeron.User",
+    "fields" : {
+      "id" : "11111111",
+      "name" : "樋口健児",
+      "email" : "kenji.higuchi@gmail.com",
+      "win_cpu" : 0,
+      "lose_cpu" : 0,
+      "draw_cpu" : 0,
+      "win_friend" : 0,
+      "lose_friend" : 0,
+      "draw_friend" : 0,
+      "flag" : false,
+      "password" : "password",
+      "recent_login_at" : "2022-01-01T00:00:00",
+      "created_at" : "2022-01-01T00:00:00",
+      "updated_at" : "2022-01-01T00:00:00"
+    }
+  },
+  {
+    "model" : "numeron.User",
+    "fields" : {
+      "id" : "99999999",
+      "name" : "管理者",
+      "email" : "kanri@gmail.com",
+      "win_cpu" : null,
+      "lose_cpu" : null,
+      "draw_cpu" : null,
+      "win_friend" : null,
+      "lose_friend" : null,
+      "draw_friend" : null,
+      "flag" : true,
+      "password" : "password",
+      "recent_login_at" : "2022-01-01T00:00:00",
+      "created_at" : "2022-01-01T00:00:00",
+      "updated_at" : "2022-01-01T00:00:00"
+    }
+  }
+]
