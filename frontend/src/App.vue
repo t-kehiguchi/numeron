@@ -1,16 +1,22 @@
 <template>
   <div id="app">
-    <HelloWorld/>
+    <Header :login="login"/>
+    <router-view/>
   </div>
 </template>
 
 <script>
-import HelloWorld from '@/components/HelloWorld';
+import Header from '@/components/Header';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Header
+  },
+  data: function() {
+    return {
+      login : false
+    }
   }
 }
 </script>
@@ -22,6 +28,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 30px;
 }
 </style>
