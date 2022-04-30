@@ -12,7 +12,7 @@ class User(models.Model):
     draw_friend = models.IntegerField(verbose_name="引き分け数(フレンド)", null=True, default=0)
     flag = models.BooleanField(verbose_name="ユーザーフラグ", default=False)
     password = models.CharField(verbose_name="パスワード", max_length=50)
-    recent_login_at = models.DateTimeField(verbose_name="最終ログイン日時", default='2022/01/01 00:00:00')
+    recent_login_at = models.DateTimeField(verbose_name="最終ログイン日時", default='2022-01-01 00:00:00')
     created_at = models.DateTimeField(verbose_name="作成日時", auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="更新日時", auto_now=True)
 

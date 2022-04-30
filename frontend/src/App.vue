@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header :login="login"/>
+    <Header :login="login" :flag="flag" :user="user"/>
     <router-view/>
   </div>
 </template>
@@ -15,8 +15,28 @@ export default {
   },
   data: function() {
     return {
-      login : false
+      login : false,
+      flag  : false,
+      user  : null
     }
+  },
+  mounted: function(){
+    this.$axios.get('http://localhost:8000/login/',{params:{id:localStorage.getItem('id')}})
+      .then(function(response){
+        if(response.data['login']){
+          // UserオブジェクトをJSON化
+          var obj = JSON.parse(response.data['user']);
+          this.login = response.data['login'];
+          this.flag = response.data['playerFlag'];
+          this.user = obj[0]['fields'];
+          // ログイン画面には遷移せずに詳細(一覧)画面へ遷移
+          response.data['playerFlag'] ? this.$router.push('/detail/' + localStorage.getItem('id')) : this.$router.push('/index/' + localStorage.getItem('id'));
+        } else {
+          this.login = false;
+        }
+      }.bind(this))
+      .finally(function(){
+      }.bind(this))
   }
 }
 </script>

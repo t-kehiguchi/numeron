@@ -1,5 +1,91 @@
-from django.shortcuts import render
+import json
+import random
+from datetime import datetime
+from django.core import serializers
+from django.http import JsonResponse
 from django.http import HttpResponse
+from numeron.models import Ranking
+from numeron.models import User
 
 def hello(request):
     return HttpResponse('Hello World ' + str(request.GET.get("greet")))
+
+def login(request):
+    # ローカル変数
+    user = None
+    isLogin = False
+    playerFlag = False
+    # ログインしているか、ログイン画面 or メイン画面へ遷移
+    if request.method == "GET":
+        if request.GET.get("id"):
+            user = User.objects.filter(id=request.GET.get("id"))
+            if user.exists():
+                isLogin = True
+                # プレイヤーの場合
+                if not user[0].flag:
+                    playerFlag = True
+            return JsonResponse(data={'user':serializers.serialize("json", user),'login':isLogin,'playerFlag':playerFlag})
+    # 実際にログイン
+    else:
+        try:
+            # パラメータ取得
+            param = json.loads(request.body)
+            user = User.objects.filter(email=param.get('email'),password=param.get('password'))
+            if user.exists():
+                # 最終ログイン日時を現在日付を設定して一括更新
+                user.update(recent_login_at=datetime.now())
+                return JsonResponse(data={'user':serializers.serialize("json", user),'flag':True,'msg':''})
+            else:
+                return JsonResponse(data={'user':None,'flag':False,'msg':'ログインできませんでした。'})
+        except:
+            return JsonResponse(data={'user':None,'flag':False,'msg':'ユーザ更新失敗しました。'})
+
+def new(request):
+    # ログインしているか、ログイン画面 or メイン画面へ遷移
+    if request.method == "GET":
+        # 新規登録するIDを取得(ランダム8桁)
+        id = random.randint(10000000, 99999999)
+        # すでに登録されているIDが存在しないまで取得し続ける
+        while User.objects.filter(id=id).count() == 1:
+            id = random.randint(10000000, 99999999)
+        return JsonResponse(data={'id':id})
+    # 新規作成
+    else:
+        try:
+            # パラメータ取得
+            param = json.loads(request.body)
+            # 登録前にメールアドレスが重複していないかチェック
+            if User.objects.filter(email=str((param.get('email')))).count() > 0:
+                return JsonResponse(data={'flag':False, 'msg':'メールアドレス重複しています。'})
+            user = User(
+                id = param.get('id'),
+                name = param.get('name'),
+                email = param.get('email'),
+                password = param.get('password')
+            )
+            # 実際に登録
+            user.save()
+            return JsonResponse(data={'flag':True, 'msg':'ユーザ登録成功しました。'})
+        except:
+            return JsonResponse(data={'flag':False, 'msg':'ユーザ登録失敗しました。'})
+
+# ランキング情報取得するメソッド
+def getRanking(request):
+    if request.GET.get("id"):
+        user = User.objects.filter(id=request.GET.get("id"))[0]
+        # 直叩き対策(意図的にIDが変わった時の対策)
+        if user:
+            # プレイヤーのみ
+            if not user.flag:
+                # ポイント合算(計算上マイナスの場合0に変換)
+                point = getScore(user)
+                point = 0 if point <= 0 else point
+                # ランク
+                ranking = Ranking.objects.raw('SELECT * FROM ranking WHERE %i BETWEEN lower_limit and upper_limit' % point)[0].rank
+                return JsonResponse(data={'ranking':ranking, 'point':point})
+    return JsonResponse(data={'ranking':'', 'point':0})
+
+# ポイント合算するメソッド(勝ち数×10、負け数×(-5)、引き分け数×1)
+def getScore(user):
+    return user.win_cpu * 10 + user.lose_cpu * (-5) + user.draw_cpu\
+           + user.win_friend * 10 + user.lose_friend * (-5) + user.draw_friend
