@@ -10,13 +10,15 @@
       <div id="inline" v-if="login">
         <p id="hello" style="float:left; clear:both;">ようこそ {{user.name}} さん</p>
         <p v-show="flag" style="float:right;">ランク : {{ranking}} (ポイント : {{point}})</p>
-        <p style="float:right; clear:both;">最終ログイン : {{user.recent_login_at}}</p>
+        <p style="float:right; clear:both;">最終ログイン : {{moment(user.recent_login_at)}}</p>
       </div>
     </header>
   </div>
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
   name: 'Header',
   props: ['login', 'flag', 'user'],
@@ -43,6 +45,11 @@ export default {
       this.$router.push('/');
       // 強制的にApp.vueのloginのGETメソッドを呼び出す
       this.$router.go({path: process.env.BASE_URL, force: true});
+    },
+    moment:function(date) {
+      // 日本語対応
+      moment.locale('ja');
+      return moment(date).format('YYYY/M/D(dd) H:m:s')
     }
   }
 }
