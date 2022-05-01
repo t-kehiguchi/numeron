@@ -25,6 +25,8 @@ def login(request):
                 if not user[0].flag:
                     playerFlag = True
             return JsonResponse(data={'user':serializers.serialize("json", user),'login':isLogin,'playerFlag':playerFlag})
+        else:
+            return JsonResponse(data={'login':isLogin})
     # 実際にログイン
     else:
         try:
