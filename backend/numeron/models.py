@@ -33,6 +33,7 @@ class Friend(models.Model):
     id_from = models.CharField(verbose_name="お気に入り元ID", max_length=8)
     id_to = models.CharField(verbose_name="お気に入り先ID", max_length=8)
     vs = models.IntegerField(verbose_name="対戦回数", default=0)
+    win = models.IntegerField(verbose_name="勝ち数", default=0)
     created_at = models.DateTimeField(verbose_name="作成日時", auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="更新日時", auto_now=True)
 
