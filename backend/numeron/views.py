@@ -2,6 +2,7 @@ import json
 import random
 from datetime import datetime
 from django.core import serializers
+from django.db import connection
 from django.http import JsonResponse
 from django.http import HttpResponse
 from numeron.models import Ranking
@@ -70,6 +71,37 @@ def new(request):
             return JsonResponse(data={'flag':True, 'msg':'ユーザ登録成功しました。'})
         except:
             return JsonResponse(data={'flag':False, 'msg':'ユーザ登録失敗しました。'})
+
+def detail(request):
+    # 該当プレイヤー取得
+    user = User.objects.filter(id=request.GET.get("id"))[0]
+    # 対戦回数(CPU、フレンド)
+    count = {
+      'cpu' : {
+          'win'  : user.win_cpu,
+          'lose' : user.lose_cpu,
+          'draw' : user.draw_cpu
+      },
+      'friend' : {
+          'win'  : user.win_friend,
+          'lose' : user.lose_friend,
+          'draw' : user.draw_friend
+      }
+    }
+    # フレンド情報(対戦回数上位10件まで)
+    # ID、氏名、対戦回数、勝率を取得できるように直SQLにて取得する
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT id_to, name, vs, CAST(win*100/vs AS SIGNED) AS winningRate\
+                        FROM friend INNER JOIN user ON user.id = friend.id_to\
+                        WHERE friend.id_from = %s order by vs desc, winningRate desc limit 10', str(request.GET.get("id")))
+        columns = [col[0] for col in cursor.description]
+        friends = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    return JsonResponse(data={'count':count,'friends':friends,'name':user.name})
+
+def index(request):
+    # プレイヤー情報を最終ログイン日時の新しい順に取得
+    user = User.objects.filter(flag=0).order_by('-recent_login_at')
+    return JsonResponse(data={'user':serializers.serialize("json", user)})
 
 # ランキング情報取得するメソッド
 def getRanking(request):
