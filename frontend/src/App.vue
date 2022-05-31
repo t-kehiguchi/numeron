@@ -29,8 +29,13 @@ export default {
           this.login = response.data['login'];
           this.flag = response.data['playerFlag'];
           this.user = obj[0]['fields'];
-          // ログイン画面には遷移せずに詳細(一覧)画面へ遷移
-          response.data['playerFlag'] ? this.$router.push('/detail/' + localStorage.getItem('id')) : this.$router.push('/index/' + localStorage.getItem('id'));
+          // 詳細画面のURL(/detail/:id)の場合
+          if(this.$route.params.id) {
+            this.$router.push('/detail/' + this.$route.params.id);
+          } else {
+            // ログイン画面には遷移せずに詳細(一覧)画面へ遷移
+            response.data['playerFlag'] ? this.$router.push('/detail/' + localStorage.getItem('id')) : this.$router.push('/index');
+          }
         } else {
           this.login = false;
         }

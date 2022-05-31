@@ -54,7 +54,7 @@ export default {
             // idをセッション保持
             localStorage.setItem('id', obj[0]['pk']);
             // 成功したら詳細(一覧)画面へ遷移
-            obj[0]['fields']['flag'] ? this.$router.push('/index/' + obj[0]['pk']) : this.$router.push('/detail/' + obj[0]['pk']);
+            obj[0]['fields']['flag'] ? this.$router.push('/index/') : this.$router.push('/detail/' + obj[0]['pk']);
             // 強制的にApp.vueのloginのGETメソッドを呼び出す
             this.$router.go({path: process.env.BASE_URL, force: true});
           } else {
