@@ -5,7 +5,7 @@
       <div v-if="login" id="button" style="float:right;">
         <div v-show="flag" class="btn btn-danger">プレイ</div>
         <div class="btn btn-warning">ランキング</div>
-        <div class="btn btn-primary" @click="exceLogout()">ログアウト</div>
+        <div class="btn btn-primary" @click="execLogout()">ログアウト</div>
       </div>
       <div id="inline" v-if="login">
         <p id="hello" style="float:left; clear:both;">ようこそ {{user.name}} さん</p>
@@ -38,7 +38,7 @@ export default {
       }.bind(this))
   },
   methods: {
-    exceLogout: function(){
+    execLogout: function(){
       // セッションを削除(クリア)
       localStorage.clear();
       // ログイン画面へ遷移
@@ -49,7 +49,7 @@ export default {
     moment:function(date) {
       // 日本語対応
       moment.locale('ja');
-      return moment(date).format('YYYY/M/D(dd) H:m:s')
+      return moment(date).format('YYYY年MM月DD日(dd) HH:mm:ss')
     }
   }
 }
