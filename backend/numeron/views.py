@@ -103,6 +103,21 @@ def index(request):
     user = User.objects.filter(flag=0).order_by('-recent_login_at')
     return JsonResponse(data={'user':serializers.serialize("json", user)})
 
+def ranking(request):
+    # ID、氏名、総ポイント、勝利数を取得できるように直SQLにて取得する
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT id, name,\
+                        SUM(win_cpu*10+lose_cpu*(-5)+draw_cpu+win_friend*10+lose_friend*(-5)+draw_friend) AS point,\
+                        SUM(win_cpu+win_friend) AS winningCount\
+                        FROM user WHERE flag = 0 GROUP BY name ORDER BY point DESC, winningCount DESC LIMIT 10')
+        columns = [col[0] for col in cursor.description]
+        ranking = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    # 10位分表示するために上記取得したrankingの件数の残分を空のレコード追加
+    [ranking.append({'id': None, 'name': None, 'point': None, 'winningCount': None}) for i in range(10-len(ranking))]
+    # フラグ取得
+    flag = User.objects.filter(id=request.GET.get("id"))[0].flag
+    return JsonResponse(data={'ranking':ranking, 'flag':flag})
+
 # ランキング情報取得するメソッド
 def getRanking(request):
     if request.GET.get("id"):

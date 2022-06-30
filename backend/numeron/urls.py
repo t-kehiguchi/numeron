@@ -7,5 +7,6 @@ urlpatterns = [
     path('new/', views.new, name='new'),
     path('index/', views.index, name='index'),
     path('detail/', views.detail, name='detail'),
+    path('ranking/', views.ranking, name='ranking'),
     path('getRanking/', views.getRanking, name='getRanking'),
 ]

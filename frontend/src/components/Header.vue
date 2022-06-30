@@ -4,7 +4,7 @@
       <a href="/" id="logo">Numeron</a>
       <div v-if="login" id="button" style="float:right;">
         <div v-show="flag" class="btn btn-danger">プレイ</div>
-        <div class="btn btn-warning">ランキング</div>
+        <div class="btn btn-warning" @click="execRanking()">ランキング</div>
         <div class="btn btn-primary" @click="execLogout()">ログアウト</div>
       </div>
       <div id="inline" v-if="login">
@@ -45,6 +45,10 @@ export default {
       this.$router.push('/');
       // 強制的にApp.vueのloginのGETメソッドを呼び出す
       this.$router.go({path: process.env.BASE_URL, force: true});
+    },
+    execRanking: function(){
+      // ランキング画面へ遷移
+      this.$router.push('/ranking');
     },
     moment:function(date) {
       // 日本語対応

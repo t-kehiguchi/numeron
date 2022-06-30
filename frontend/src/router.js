@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Detail from '@/views/detail';
 import Index from '@/views/index';
+import Ranking from '@/views/ranking';
 import Login from '@/views/login';
 import New from '@/views/new';
 
@@ -27,6 +28,11 @@ const routes = [
     path: '/index',
     name: 'index',
     component: Index
+  },
+  {
+    path: '/ranking',
+    name: 'ranking',
+    component: Ranking
   },
 ];
 
