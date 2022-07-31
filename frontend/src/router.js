@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Detail from '@/views/detail';
 import Index from '@/views/index';
 import Ranking from '@/views/ranking';
+import Setting from '@/views/setting';
 import Login from '@/views/login';
 import New from '@/views/new';
 
@@ -33,6 +34,11 @@ const routes = [
     path: '/ranking',
     name: 'ranking',
     component: Ranking
+  },
+  {
+    path: '/setting',
+    name: 'setting',
+    component: Setting
   },
 ];
 

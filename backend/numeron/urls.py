@@ -8,5 +8,6 @@ urlpatterns = [
     path('index/', views.index, name='index'),
     path('detail/', views.detail, name='detail'),
     path('ranking/', views.ranking, name='ranking'),
+    path('setting/', views.setting, name='setting'),
     path('getRanking/', views.getRanking, name='getRanking'),
 ]

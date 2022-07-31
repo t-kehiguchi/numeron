@@ -118,6 +118,16 @@ def ranking(request):
     flag = User.objects.filter(id=request.GET.get("id"))[0].flag
     return JsonResponse(data={'ranking':ranking, 'flag':flag})
 
+def setting(request):
+    # ID、氏名を対戦回数の多い順に取得
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT id_to AS id, name\
+                        FROM friend INNER JOIN user ON user.id = friend.id_to\
+                        WHERE friend.id_from = %s ORDER BY vs DESC', str(request.GET.get("id")))
+        columns = [col[0] for col in cursor.description]
+        friends = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    return JsonResponse(data={'friends':friends})
+
 # ランキング情報取得するメソッド
 def getRanking(request):
     if request.GET.get("id"):

@@ -3,7 +3,7 @@
     <header>
       <a href="/" id="logo">Numeron</a>
       <div v-if="login" id="button" style="float:right;">
-        <div v-show="flag" class="btn btn-danger">プレイ</div>
+        <div v-show="flag" class="btn btn-danger" @click="play()">プレイ</div>
         <div class="btn btn-warning" @click="execRanking()">ランキング</div>
         <div class="btn btn-primary" @click="execLogout()">ログアウト</div>
       </div>
@@ -49,6 +49,10 @@ export default {
     execRanking: function(){
       // ランキング画面へ遷移
       this.$router.push('/ranking');
+    },
+    play: function(){
+      // プレイ設定画面へ遷移
+      this.$router.push('/setting');
     },
     moment:function(date) {
       // 日本語対応
