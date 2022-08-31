@@ -13,3 +13,4 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py loaddata numeron\json\user.json
 python manage.py loaddata numeron\json\rank.json
+python manage.py loaddata numeron\json\call.json

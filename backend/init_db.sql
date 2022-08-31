@@ -13,3 +13,4 @@ drop table if exists django_content_type;
 drop table if exists user;
 drop table if exists ranking;
 drop table if exists friend;
+drop table if exists calling;

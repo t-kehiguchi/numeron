@@ -43,3 +43,12 @@ class Friend(models.Model):
             # id_fromとid_toでユニーク制約
             models.UniqueConstraint(fields=['id_from', 'id_to'], name='unique_stock')
         ]
+
+class Calling(models.Model):
+    level = models.IntegerField(verbose_name="レベル", primary_key=True)
+    call = models.CharField(verbose_name="コール", max_length=10)
+    created_at = models.DateTimeField(verbose_name="作成日時", auto_now_add=True)
+    updated_at = models.DateTimeField(verbose_name="更新日時", auto_now=True)
+
+    class Meta:
+        db_table = 'calling'
