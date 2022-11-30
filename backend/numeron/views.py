@@ -108,7 +108,7 @@ def ranking(request):
     with connection.cursor() as cursor:
         cursor.execute('SELECT id, name,\
                         SUM(win_cpu*10+lose_cpu*(-5)+draw_cpu+win_friend*10+lose_friend*(-5)+draw_friend) AS point,\
-                        SUM(win_cpu+win_friend) AS winningCount\
+                        SUM(win_count) AS winningCount\
                         FROM user WHERE flag = 0 GROUP BY name ORDER BY point DESC, winningCount DESC LIMIT 10')
         columns = [col[0] for col in cursor.description]
         ranking = [dict(zip(columns, row)) for row in cursor.fetchall()]
