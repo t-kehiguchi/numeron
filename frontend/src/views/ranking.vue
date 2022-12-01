@@ -21,7 +21,7 @@
               <p v-else style="margin:0px;">{{rank['id'] != null ? rank['name'] + ' さん' : ''}}</p>
             </td>
             <td>
-              {{rank['point']}}
+              {{rank['point'] > 0 ? rank['point'] : 0}}
             </td>
             <td>
               {{rank['winningCount']}}
