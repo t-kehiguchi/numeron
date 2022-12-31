@@ -4,6 +4,7 @@ import Detail from '@/views/detail';
 import Index from '@/views/index';
 import Ranking from '@/views/ranking';
 import Setting from '@/views/setting';
+import Play from '@/views/play';
 import Login from '@/views/login';
 import New from '@/views/new';
 
@@ -39,6 +40,11 @@ const routes = [
     path: '/setting',
     name: 'setting',
     component: Setting
+  },
+  {
+    path: '/play/:type/:option',
+    name: 'play',
+    component: Play
   },
 ];
 

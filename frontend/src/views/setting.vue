@@ -80,6 +80,9 @@ export default {
       // フレンド選択でフレンドIDが指定なしの場合は選択し直す
       if(type == "フレンド" && !option) {
         alert('フレンド選択の場合はフレンドを選択してください。');
+      } else {
+        // プレイ画面へ遷移
+        this.$router.push({path:'/play' + '/' + type + '/' + option});
       }
     }
   }
