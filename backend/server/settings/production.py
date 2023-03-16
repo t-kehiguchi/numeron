@@ -1,7 +1,11 @@
+import os
+
 from .base import *
+from dotenv import load_dotenv
+load_dotenv()
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '-()$c@ul2jxaob3=354(dc8ypmc=_c^hfr!5!v_ab11m_^#mik'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -14,9 +18,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'heroku_4d412989052757a',
-        'USER': 'bc391bee64ee4a',
-        'PASSWORD': 'cc59f15a',
-        'HOST': 'us-cdbr-east-06.cleardb.net',
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
         'PORT': '3306',
     }
 }
